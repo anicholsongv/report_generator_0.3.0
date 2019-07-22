@@ -1,10 +1,485 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+ <link rel="stylesheet" type="text/css" href="v2_style.css">
+    <style>@page{
+    @bottom-left {content: "Strictly Private and Confidential - Copyright \00A9  Getvisibility 2019"}
+    @top-left {content: url('Getvisibility-Header.png');}
+    @top-right {content: "{{ comp_name }}\A\A Server Name:  {{ scanned_host }}\AScan Date: {{ today }}";}
+    }
+    </style>
 </head>
 <body>
+<h2>Introduction</h2>
+<p>A follow up scan and classification was performed on the unstructured data and images on {{ comp_name }}'s {{ scanned_host }} file server using the Getvisibility Focus platform.</p>
+
+<h3>The specific share involved is highlighted below:</h3>
+
+<table class="GV_tables"> <!-- ADD LINE FOR HIGHLIGHTED SHARE {{ scanned_share_name }} -->
+    <caption><h3>Shares</h3></caption>
+    <tr class="table_header"><th>Name</th><th>Location</th><th>Access</th></tr>
+    {% for share in shares %}
+    {% if  share.name  ==  scanned_share_name  %}
+    <tr class="GV_tables_highlight">
+        <td class="GV_tables_first">{{ share.name }}</td><td>{{ share.location }}</td><td>{{ share.access }}</td>
+    </tr>
+    {% else %}
+    <tr>
+        <td class="GV_tables_first">{{ share.name }}</td><td>{{ share.location }}</td><td>{{ share.access }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+
+<h3>This report summarises the findings and includes:</h3>
+<ul>
+    <li>File totals</li>
+    <li>Classification categories applied by the software</li>
+    <li>Key findings</li>
+    <li>File types</li>
+    <li>PII information found</li>
+    <li>Active Directory users (active/inactive/disabled)</li>
+    <li>Directories with the most sensitive data</li>
+</ul>
+
+<h2>File Totals</h2>
+
+<p><span class="important_info">{{ discovered_total }}</span> files were discovered in the {{ scanned_share_name }}. <!--In total <span class="important_info">{{ classifiable_total }}</span> are documents or images that may contain text that can be classified.--></p>
+
+<p>Of this number <span class="important_info">{{ classified_total }}</span> were classified, including some that are images of scanned documents.</p>
+<p>A total of <span class="important_info">{{ unclassified_total }}</span> files from the {{ scanned_share_name }} were not classified as they are not documents or images with recognisable text.</p>
+<div class="page_break_div"></div>
+
+<h2>Classification</h2>
+<p>Getvisibility Focus utilises the latest technology in Machine Learning and Natural Language Processing to identify Personal Identifiable Information. It then classifies customer data into more than 70 subcategories. In addition, the platform maps subcategories to sensitivity levels and confidentiality tags as shown in the diagram below.</p>
+<img src="classification_tags.png" class="class_tags_image">
+<p>This structure allows customers to easily identify the most critical data for their company using the platform's Web User Interface or the management reports presented here.</p>
+<p>The confidentiality levels have been customised to match {{ comp_name }}'s internal levels</p>
+
+<div class="page_break_div"></div>
+<h2>Optical Character Recognition</h2>
+<p>The platform's <span class="important_info">Optical Character Recognition (OCR)</span> module was activated for this Proof of Concept (PoC). It identifies textual information within images and scanned files for data that will then be processed and classified. The textual data found within the images of the {{ scanned_share_name }} Share were distributed throughout the following folders.</p>
+<figure><img src="{{ iff_graph_name }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of images and their locations within the folders of {{ scanned_share_name }}.</figcaption></figure>
+
+<div class="information_box">
+<p>The full paths of the folders and total counts:</p>
+    <ul>
+{% for k, v in top_ten_image_folder_dict.items() %}
+{% if loop.index <= 9 %}
+        <li>{{ k }}: <b>{{ v }}</b></li>
+{% endif %}
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+<!--<h2>Confidential File Distribution</h2>
+<p><span class="important_info">{{ confidential_total }}</span> confidential documents (refer to Appendix I for the confidential tag definition) were identified in the {{ scanned_share_name }} share. The folders that contain the most are shown below.</p>
+
+<figure><img src="{{ cdd_graph_name }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of confidential documents and their locations within the folders of {{ scanned_share_name }}.</figcaption></figure>
+
+<div class="information_box">
+<p>The total counts for the top folders:</p>
+    <ul>
+{% for k, v in sorted_confid_folder_dict.items() %}
+        {% if loop.index <= 6 %}
+    <li>{{ k }}: {{ v }}</li>
+        {% endif %}
+{% endfor %}
+        </ul>
+</div>
+
+<div class="page_break_div"></div>-->
+
+<h2>Sensitive File Distribution</h2>
+<p><span class="important_info">{{ sensitive_total }}</span> files were found to have sensitive information on them.</p>
+<p>The following folders contain the most sensitive files.</p>
+<figure><img src="{{ sdd_graph_name }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of sensitive documents and their locations within the folders of {{ scanned_share_name }}.</figcaption></figure>
+
+<div class="information_box">
+<p>The total counts for the top folders:</p>
+    <ul>
+{% for k, v in sorted_sen_folder_dict.items() %}
+        {% if loop.index <= 10 %}
+        <li>{{ k }}: <b>{{ v }}</b></li>
+        {% endif %}
+{% endfor %}
+        </ul>
+</div>
+
+<div class="page_break_div"></div>
+
+<h2>{{ comp_name }} Internal Confidentiality Tags</h2>
+<p>As requested, the platform has integrated {{ comp_name }}'s internal confidentiality tags into the scan. Below are the percentages of those files that fall under this classification system.</p>
+<figure><img src="aip_pie.svg" class="pie_charts"><figcaption>The above graph outlines percentage of these files within this classification system.</figcaption></figure>
+
+<div class="information_box">
+<p>Total counts for each tag:</p>
+    <ul>
+{% for k, v in aip_count_dict.items() %}
+        <li>{{ k }}: <b>{{ v }}</b></li>
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+
+<figure><img src="{{ ars_graph_name }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of Restricted Documents that have been classified using {{ comp_name }}'s Internal Confidentiality Tags.</figcaption></figure>
+
+<div class="information_box">
+<p>The total count of each Subcategory is as follows:</p>
+    <ul>
+{% for k, v in sorted_ars_sub_dict.items() %}
+        <li>{{ k }}: <b>{{ v }}</b></li>
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+
+<figure><img src="{{ ais_graph_name }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of Internal Documents that have been classified using {{ comp_name }}'s Internal Confidentiality Tags.</figcaption></figure>
+
+<div class="information_box">
+<p>The total count of each Subcategory is as follows:</p>
+    <ul>
+{% for k, v in sorted_ais_sub_dict.items() %}
+        <li>{{ k }}: <b>{{ v }}</b></li>
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+
+<figure><img src="{{ acs_graph_name }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of Confidential Documents that have been classified using {{ comp_name }}'s Internal Confidentiality Tags.</figcaption></figure>
+
+<div class="information_box">
+<p>The total count of each Subcategory is as follows:</p>
+    <ul>
+{% for k, v in sorted_acs_sub_dict.items() %}
+        <li>{{ k }}: <b>{{ v }}</b></li>
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+
+<figure><img src="{{ aus_graph_name }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of Un-restricted Documents that have been classified using {{ comp_name }}'s Internal Confidentiality Tags.</figcaption></figure>
+
+<div class="information_box">
+<p>The total count of each Subcategory is as follows:</p>
+    <ul>
+{% for k, v in sorted_aus_sub_dict.items() %}
+        <li>{{ k }}: <b>{{ v }}</b></li>
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+
+<h2>Personally Identifiable Information (PII)</h2>
+<p>As part of the Getvisibility Focus platform's Data Governance Suite an <b>AI component</b> was developed to identify <b>Personal Identifiable Information (PII)</b>. This assists customers with GDPR requirements that require identification and protection of such data. This feature has recognised <b>PII</b> information in <span class="important_info">{{ pii_total }}</span> files.</p>
+
+<figure><img src="pii_v_class_pie.svg" class="pie_charts"><figcaption>The above graph outlines percentage of PII within the total classified files.</figcaption></figure>
+
+<div class="information_box">
+<p>The total counts:</p>
+    <ul>
+    <li>PII Classified: {{ pii_total }}</li>
+        <li>Non PII Classified: <b>{{ class_minus_pii }}</b></li>
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+
+<figure><img src="PII_cats_pie.svg" class="pie_charts"><figcaption>The above graph outlines the distribution of PII documents and their Categories.</figcaption></figure>
+
+<div class="information_box">
+<p>PII Categories</p>
+    <ul>
+{% for k, v in sorted_PII_cat_dict.items() %}
+        <li>{{ k }}: <b>{{ v }}</b></li>
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+
+<h2>Example Classifications</h2>
+<p>To showcase how classification tags are applied, presented here example files and the attributes given to them by the platform. A list of all the files classified is available as a CSV export.</p>
+<table  style="width:100%"  class="GV_tables">
+    <caption><h3>Example Files Classified</h3></caption>
+    <tr class="table_header"><th style="width:200px">Path</th><th>File Type</th><th>Category</th><th>Subcategory</th><th>PII</th><th>Sensitivity</th><th>Confidence</th></tr>
+    {% for k, v in top_subCat_confid_dict.items() %}
+    <tr>
+        <td class="GV_tables_first">{{ k }}</td><td>{{ v['type'] }}</td><td>{{ v['category'] }}</td>
+        <td>{{ v['subcategory'] }}</td><td>{{ v['pii'] }}</td><td>{{ v['sensitivity'] }}</td>
+        <td>{{ v['confidentiality'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="page_break_div"></div>
+
+
+<h2>Active Directory Information</h2><!--
+<p>The last part of the PoC assesses the access rights of the Active Directory users and identifies possible risks to customer data based on the findings. To achieve this, Getvisibilty Focus connects to {{ comp_name }}'s domain controller, it then reads the list of users and groups from the {{ scanned_share_name }} Share. The platform then runs the classification of the files; gathering metadata and permissions for each one. It then compares this information with the access rights gleaned from the Active Directory. By comparing these datasets the following questions are answered:</p>
+<ul>
+    <li>Who has access to a specific folder or file?</li>
+    <li>What files and folders are available to a specific user or group?</li>
+    <li>Are some files and folders extensively shared and at risk?</li>
+</ul>
+<h3>#######################May be inaccurate#############################</h3>
+<p><span class="important_info">{{ ieha_length }} Administrators and {{ iehu_length }} Potentially High Privileged Users</span> whose accounts are classified as inactive (not logged in for <b>90</b> or more days) but not disabled, were identified from the Active Directory. If a malefactor were to gain credentials or access to any of these accounts they would have extensive privileges to {{ comp_name }}'s resources.</p>
+<p>The list of these <b>{{ risk_list_count }}</b> users is given below (detailed descriptions are available in the appendices):</p>
+ <span class="important_info">{% for i in risk_list %}{{ i }}, {% endfor %}</span>
+<p>Of these users, {{ admin_users_num }}<b>#</b>  have <b>direct access</b> to the {{ scanned_share_name }} Share:</p>
+<span class="important_info">{{ admin_users_list }}</span>
+<p><span class="important_info">{{ priv_acc_group_lvl1_num }}</span><b>#</b>  Active Directory groups have <b>indirect access</b> to the {{ scanned_share_name }} Share:</p>
+<h3>###################Missing Info##########################</h3>
+<span class="important_info">{{ indir_acc_group_list }}</span>
+<p><span class="important_info">{{ priv_acc_group_lvl2_num }}</span><b>#</b>  more groups have indirect access to the {{ scanned_share_name }} Share through the <b>{{ priv_acc_lvl2_group }} group</b>:</p>
+<span class="important_info">{{ priv_acc_group_lvl2_list }}</span>
+
+<h2>Other Risks</h2>
+<p><span class="important_info">{{ lonely_priv_user_num }}</span><b>#</b> users were found with <b>direct access</b> to the {{ scanned_share_name }} Share from outside the groups permission structure.</p>
+<p><span class="important_info">{{ lonely_files_num }}<b>#</b>  files and {{ lonely_folders_num }}<b>#</b>  folders</span> were shared outside of the {{ priv_acc_group_lvl2_num }} most powerful Active Directory groups.</p>
+<p>The platform can be used to <b>automatically identify data at risk</b> such as: data that is extensively shared, has been shared directly to users outside of specific groups or has been given inappropriate access rights due to inheritance.</p>
+<h3>###########################################################</h3>
+<div class="page_break_div"></div>-->
+
+<table class="GV_tables">
+    <caption><h3>Users in the most groups</h3></caption>
+    <tr class="table_header"><th>User Name</th><th>Number of Groups</th><td>Active</td></tr>
+    {% for ctu in counted_tu %}
+    <tr>
+        <td class="GV_tables_first">{{ ctu[0] }}</td><td>{{ ctu[1][0] }}</td><td>{{ ctu[1][1] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="page_break_div"></div>
+<p>There are <b>{{ counted_eiu_len }}</b> enabled users on the {{ scanned_share_name }} share who have not logged-in in 90 days or more. They are listed below in ascending order of date. The full results are available as a exported file.</p>
+<table class="GV_tables">
+    <caption><h3>Enabled Inactive Users</h3></caption>
+    <tr class="table_header"><th>User Name</th><th>Last Logged In</th></tr>
+    {% for ceiu in counted_eiu %}
+    {% if loop.index <= 30 %}
+    <tr>
+        <td class="GV_tables_first">{{ ceiu[0] }}</td><td>{{ ceiu[1] }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+<div class="page_break_div"></div>
+
+<table class="GV_tables">
+    <p>There are <b>{{ counted_poodu_len }}</b> users on the {{ scanned_share_name }} share whose passwords have not been changed in the last 90 days or more. They are listed below in ascending order of date. The full results are available as a exported file.</p><p style="font-size: .9em;">The 1601-01-01 00:00:00 date is the beginning of the Gregorian Calender and is used by LDAP to denote the earliest possible date.</p>
+    <caption><h3>Active users with unchanged passwords</h3></caption>
+    <tr class="table_header"><th>User Name</th><th>Password Last Changed</th><th>Last Logged In</th></tr>
+    {% for cpo in counted_poodu %}
+    {% if loop.index <= 28 %}
+    <tr>
+        <td class="GV_tables_first">{{ cpo[0] }}</td><td>{{ cpo[1][0] }}</td><td>{{ cpo[1][1] }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+
+<div class="page_break_div"></div>
+
+<!--<table class="GV_tables">
+    <caption><h3>Oldest Active Users</h3></caption>
+    <tr class="table_header"><th>User Name</th><th>Created At</th><th>Last Logged In</th><th>Group Membership Number</th></tr>
+    {% for coau in counted_oau %}
+    <tr>
+        <td class="GV_tables_first">{{ coau[0] }}</td><td>{{ coau[1][0] }}</td><td>{{ coau[1][1] }}</td><td>{{ coau[1][2] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<p></p>
+<div class="page_break_div"></div>
+-->
+
+<h2>File Classification Analysis</h2>
+
+<p>The distribution of files within their subcategories are shown below.</p>
+<figure><img src="doc_cats_pie.svg" class="pie_charts"><figcaption>The above graph outlines the distribution of Documents that have been classified by this scan.</figcaption></figure>
+
+<div class="information_box">
+<p>The total count of each Subcategory is as follows:</p>
+    <ul>
+{% for k, v in sorted_cat_number_dict.items() %}
+        <li>{{ k }}: <b>{{ v }}</b></li>
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+<figure><img src="{{ bdd_graph_name }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of Business Documents that have been classified by this scan.</figcaption></figure>
+
+<div class="information_box">
+<p>The total count of each Subcategory is as follows:</p>
+    <ul>
+{% for k, v in sorted_busi_sub_dict.items() %}
+    <li>{{ k }}: <b>{{ v }}</b></li>
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+
+<figure><img src="{{ fdd_graph_name }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of Finance Documents that have been classified by this scan.</figcaption></figure>
+
+<div class="information_box">
+<p>The total count of each Subcategory is as follows:</p>
+    <ul>
+{% for k, v in sorted_finance_sub_dict.items() %}
+    <li>{{ k }}: <b>{{ v }}</b></li>
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+
+<figure><img src="{{ tdd_graph_name }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of Technical Documents that have been classified by this scan.</figcaption></figure>
+
+<div class="information_box">
+<p>The total count of each Subcategory is as follows:</p>
+    <ul>
+{% for k, v in sorted_tech_sub_dict.items() %}
+        <li>{{ k }}: <b>{{ v }}</b></li>
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+
+<div><img src="{{ ldd_graph_name }}" class="bar_graphs"></div>
+<p>The above graph outlines the distribution of Legal Documents that have been classified by this scan.</p>
+<div class="information_box">
+<p>The total count of each Subcategory is as follows:</p>
+    <ul>
+{% for k, v in sorted_legal_sub_dict.items() %}
+        <li>{{ k }}: <b>{{ v }}</b></li>
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+
+<figure><img src="{{ mdd_graph_name }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of Marketing Documents that have been classified by this scan.</figcaption></figure>
+
+<div class="information_box">
+<p>The total count of each Subcategory is as follows:</p>
+    <ul>
+{% for k, v in sorted_mark_sub_dict.items() %}
+        <li>{{ k }}: <b>{{ v }}</b></li>
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+
+<figure><img src="{{ hrd_graph_name }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of HR Documents that have been classified by this scan.</figcaption></figure>
+
+<div class="information_box">
+<p>The total count of each Subcategory is as follows:</p>
+    <ul>
+{% for k, v in sorted_hr_sub_dict.items() %}
+        <li>{{ k }}: <b>{{ v }}</b></li>
+{% endfor %}
+        </ul>
+</div>
+<div class="page_break_div"></div>
+
+<table class="GV_tables">
+    <caption><h3>Files Success Codes</h3></caption>
+    <tr class="table_header"><th>Number of Files</th><th>Status Code</th><th>Reason</th></tr>
+    {% for fsc in files_success_code_count %}
+    <tr>
+        <td class="GV_tables_first">{{ fsc[0] }}</td><td>{{ fsc[1] }}</td><td>{{ fsc[2] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<p>A percentage (%) of files were not classified by the software. This number does not impact the overall findings. This is caused by some unsupported character encoding (often in XML files that are part of a driver installation package).</p>
+<div class="page_break_div"></div>
+
+
+
+
+<h2>File Type Analysis</h2>
+<img src="veRT_BAR_GRAPH_TOTAL_ANDAVG_SIZE_OF_EACH_FILE_TYPE">
+<table class="GV_tables">
+    <caption><h3>Top 50 File Types and Average Sizes</h3></caption>
+    <tr class="table_header"><th>File Type</th><th>Total Count</th><th>Average Size</th></tr>
+
+    {% for k, v in file_type_avg_dict.items() %}
+    {% if loop.index <= 50 %}
+    <tr>
+        <td class="GV_tables_first">{{ k }}</td><td>{{ v['count'] }}</td><td>{{ v['average_size'] }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+<div class="page_break_div"></div>
+<!--
+<h2>Appendix I</h2>
+<p>Categories and subcategories that are classified as <b>Confidential</b> files. This classification can be customised to customer requirements.</p>
+<ul>
+    <li>
+<li>Business_Documents:Business plans</li>
+<li>Financial_Documents:Financial Agreements/Contracts</li>
+<li>Financial_Documents:Invoices</li>
+<li>Financial_Documents:Payslips</li>
+<li>Financial_Documents:Taxation forms</li>
+<li>HR_Documents:CV</li>
+<li>HR_Documents:Employee profile images</li>
+<li>HR_Documents:Employee records</li>
+<li>Legal_Documents:Agreements/Contracts</li>
+<li>Legal_Documents:Certificate/Permit</li>
+<li>Legal_Documents:Legal Correspondence</li>
+<li>Legal_Documents:Patents</li>
+<li>Marketing_Documents:Market Research/Planning</li>
+<li>Technical_Documents:Code</li>
+<li>Technical_Documents:Proposals</li>
+<li>Technical_Documents:Specifications/Blueprints</li>
+</li>
+</ul>
+
+<div class="page_break_div"></div>
+
+<h2>Appendix II</h2>
+
+<p><b>For the use of GetVisibility</b></p>
+<p><b>Vectoriser Model = {{ model_numbers['vectoriser_model'] }}</b></p>
+<p><b>Classifier Model = {{ model_numbers['classifier_model'] }}</b></p>
+-->
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

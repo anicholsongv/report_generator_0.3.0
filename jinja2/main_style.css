@@ -1,0 +1,143 @@
+/*logo colors: - gold- BCA478 rgb(188,164,120)
+            - dark blue- 202733
+
+dashboard colors:
+      green: 2CBA94
+       pink: C94F5F
+       blue: 1F83C0  rgb(31,131,192)
+       yellow: CBA333
+       purple: 7D4EA0
+
+
+GV_colors = [#1F83C0, #BCA478, #2CBA94, #C94F5F, #7D4EA0, #CBA333, #202733]
+
+Lato -light,  medium , semibold, bold .
+
+*/
+
+#logo {
+    height:100px;
+    align:left
+}
+
+.important_info {
+    color: #BCA478;
+    font-weight: bold
+
+}
+
+h2 {
+    color: #BCA478;
+    font-weight: bold
+
+}
+
+h3 {
+ color: rgb(32,39,51);
+    font-weight: bold
+
+}
+
+.table_header {
+    background-color: #BCA478;
+    font-weight: bold;
+    text-align:center;
+}
+
+.GV_tables, th, td {
+    border: None;
+     border-collapse: collapse;
+     table-layout:fixed;
+     margin-left:auto;
+    margin-right:auto;
+    padding:5px;
+    text-align:center;
+
+}
+
+.GV_tables_first {
+    text-align:left;
+
+}
+tr:nth-child(even) {background-color: rgba(31, 131, 192, 0.1);}
+
+.bar_graphs {
+    width:110%;
+}
+.pie_charts {
+    height:60%;
+    width: 80%
+}
+
+.page_break_div {
+    page-break-after: always;
+}
+
+.suggestion_box {
+    border-radius:5%;
+    background-color : rgba(31,131,192, .2);
+    width: 30%;
+    min-height:10%;
+    font-weight: bold;
+    float: right;
+    padding: 2%;
+
+}
+.information_box {
+    border-radius:2%;
+    background-color : rgba(188,164,120, .2);
+    width: auto;
+    min-height:10%;
+    font-weight: bold;
+    float: left;
+    padding: 2%;
+
+}
+html{
+    font-family: 'Lato Light', sans-serif;
+}
+
+@font-face {
+font-family: 'Lato Light';
+
+}
+
+
+@page {
+    margin: 7em 5em 5em 5em;
+    font-family: 'Lato Light', sans-serif;
+    @bottom-right {
+        content: counter(page);
+    };
+    @top-left-corner {
+        content: url('Getvisibility-Logo-Small.png');
+K
+    };
+    @bottom-center {
+        width:100%; height: 100%;
+        background-color: rgba(188,164,120,.2)
+    };
+    @bottom-left: {border-top: 1px solid #aaa;
+        width:100%;
+        white-space: pre-wrap;
+        font-size: .8em
+
+         };
+    @top-right: {border-bottom : 1px solid #aaa;
+        width: 100%;
+        white-space: pre-wrap;
+        font-size: .8em;
+        text-align: right;
+        font-weight: bold;
+    };
+    @top-left {
+        font-size: .9em;
+        width:100%;
+        font-weight: bold;
+
+    }
+}
+
+
+/*body {background-color: rgba(188,164,120,.2)}
+

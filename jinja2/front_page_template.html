@@ -2,9 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Front Page</title>
+    <style>
+    body {
+    background: url(default_front_page.svg) no-repeat center bottom fixed;
+    background-size: cover;
+    }
+
+    @page {
+
+        margin: 0 0 0 0;
+        padding: 0 0 0 0;
+    }
+    #text_box {
+        position: fixed;
+        top: 45%;
+        left : 50%;
+        width: 40%;
+        height: 15%;
+        color : white;
+        font-family: 'Lato Heavy', sans-serif;
+        font-size: 1.2em;
+        text-align: right;
+        padding: 5%;
+        text-transform: uppercase;
+
+    }
+    </style>
 </head>
 <body>
-
+<div id="text_box"><p>Scan for: {{ comp_name }}</p>
+    <p>IP address: {{ ip_add }}</p>
+    <p>Share name: {{ scanned_share_name }}</p>
+    <p>Date: {{ today }}</p></div>
 </body>
 </html>

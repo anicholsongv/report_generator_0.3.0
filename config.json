@@ -1,0 +1,15 @@
+{
+  "comp_name": "Dairygold",
+  "share_name": "property",
+  "pg_host": "localhost",
+  "pg_db" : "test_dg",
+  "pg_user": "postgres",
+  "pg_password" : "",
+  "pg_port" : 5432,
+  "pg_classification_table" : "classification",
+  "pg_access_table" : "access",
+  "pg_file_table" : "file",
+  "trustee_json_address" : "http://ares.smarttech.local:9999"
+
+}
+

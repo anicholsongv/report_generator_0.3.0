@@ -7,6 +7,7 @@ import plotly.io as pio
 
 
 class PlotlyGraph:
+    output_dir = "../data/dist/"
 
     def __init__(self, data_dict, graph_title, extra_title):
         self.data_dict = data_dict
@@ -53,44 +54,8 @@ class PlotlyGraph:
 
         # Convert to svg
         file_name_string = extra_title + str(graph_title.replace(" ", "")[:5]) + '_bar_graph'
-        pio.write_image(bar_graph, f'{file_name_string}.svg', format='svg')
+        pio.write_image(bar_graph, f'{self.output_dir}{file_name_string}.svg', format='svg')
 
         print(file_name_string, "successfully created")
         return f'{file_name_string}.svg'
 
-    def horizontal_gv_bar_image(self):
-        # Horiz bar graph with largest on top with gv colours
-        graph_title = str(self.graph_title)
-        extra_title = str(self.extra_title)
-        data_dict = self.data_dict_sorter()
-        gv_colours = self.gv_colours
-        x_data = list(data_dict.values())
-        y_data = list(data_dict.keys())
-        y_data[1] = y_data[1] + " "
-
-        # Graph values and how they are represented
-        graph_data = [go.Bar(
-            x=x_data,
-            y=[i.rsplit('/', 1)[-1] for i in y_data],
-            text=x_data,  # Puts data on the bars
-            textposition='auto',
-            orientation='h',
-            marker=dict(color=gv_colours[:len(data_dict)]),
-        )]
-
-        # Graph visual structure
-        graph_layout = go.Layout(title=graph_title,autosize=True, width=800,height=500,
-                                       margin=go.layout.Margin(l=80, r=80, b=100, t=100, pad=4),
-                                    font=dict(family="Lato", size=12),
-                                 yaxis=dict(autorange="reversed", automargin=True),
-                                 xaxis=dict(tickformat=',d', automargin=True))
-
-        # Create graph
-        bar_graph = go.Figure(data=graph_data, layout=graph_layout)
-
-        # Convert to svg
-        file_name_string = extra_title + str(graph_title.replace(" ", "")[:5]) + '_bar_graph'
-        pio.write_image(bar_graph, f'{file_name_string}.svg', format='svg')
-
-        print(file_name_string, "successfully created")
-        return f'{file_name_string}.svg'

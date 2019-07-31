@@ -1,12 +1,13 @@
 
 """Create an svg image of graph based on a dictionary"""
 
-import collections
+
 import plotly.graph_objs as go
 import plotly.io as pio
+from repository.DataSorter import DataSorter
 
 
-class PlotlyGraph:
+class HorizGraphDrawer:
     output_dir = "../data/dist/"
 
     def __init__(self, data_dict, graph_title, extra_title):
@@ -15,19 +16,12 @@ class PlotlyGraph:
         self.extra_title = extra_title
         self.gv_colours = ['#1F83C0', '#BCA478', '#2CBA94', '#C94F5F', '#7D4EA0', '#CBA333', '#202733']
 
-    def data_dict_sorter(self):
-        # Sorts dict into list of tuples to have large numbers on top
-        sorted_data_dict = sorted(self.data_dict.items(), key=lambda kv: kv[1], reverse=True)
-
-        # Converts back to Dictionary (Ordered)
-        sorted_data_dict = collections.OrderedDict(sorted_data_dict)
-        return sorted_data_dict
 
     def horizontal_gv_bar(self):
         # Horiz bar graph with largest on top with gv colours
         graph_title = str(self.graph_title)
         extra_title = str(self.extra_title)
-        data_dict = self.data_dict_sorter()
+        data_dict = DataSorter.data_dict_sorter(self.data_dict)
         gv_colours = self.gv_colours
         x_data = list(data_dict.values())
         y_data = list(data_dict.keys())
@@ -57,5 +51,6 @@ class PlotlyGraph:
         pio.write_image(bar_graph, f'{self.output_dir}{file_name_string}.svg', format='svg')
 
         print(file_name_string, "successfully created")
-        return f'{file_name_string}.svg'
+
+        return {'graph_file_name': f'{file_name_string}.svg'}
 

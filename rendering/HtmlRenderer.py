@@ -12,7 +12,7 @@ class HTMLRenderer:
         template = self.templateEnv.get_template("sensitive_template.html")
         main_html = template.render(template_dict=self.template_dict)
 
-        final_html = open("main_report.html", "w")
+        final_html = open("../data/dist/main_report.html", "w")
         final_html.write(main_html)
         final_html.close()
 

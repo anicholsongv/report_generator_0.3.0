@@ -8,12 +8,12 @@
 <h2>Sensitive File Distribution</h2>
 <p><span class="important_info"></span> files were found to have sensitive information on them.</p>
 <p>The following folders contain the most sensitive files.</p>
-<figure><img src="{{ sensitive_graph_file_name }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of sensitive documents and their locations within the folders of</figcaption></figure>
+<figure><img src="{{ template_dict['graph_file_name'] }}" class="bar_graphs"><figcaption>The above graph outlines the distribution of sensitive documents and their locations within the folders of</figcaption></figure>
 
 <div class="information_box">
 <p>The total counts for the top folders:</p>
     <ul>
-{% for k, v in sensitive_data.items() %}
+{% for k, v in template_dict['graph_data'].items() %}
         {% if loop.index <= 10 %}
         <li>{{ k }}: <b>{{ v }}</b></li>
         {% endif %}

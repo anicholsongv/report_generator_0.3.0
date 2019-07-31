@@ -13,9 +13,9 @@ import math
 
 import ijson
 
-from repository.classification_repo import ClassificationRepo as CR
-from rendering.ReportGraphs import PlotlyGraph
-from rendering.HTMLRenderer import HTMLRenderer
+from repository.ClassificationRepo import ClassificationRepo
+from rendering.HorizGraphDrawer import HorizGraphDrawer
+from rendering.HtmlRenderer import HTMLRenderer
 
 import psycopg2
 import json
@@ -42,11 +42,12 @@ trustee_json_address = config_dict["trustee_json_address"]
 conn = psycopg2.connect(f"host={host} dbname={dbname} user={user} password={password} port={port}")
 cur = conn.cursor()
 
-classification_repo = CR(cur, classification_table)
+classification_repo = ClassificationRepo(cur, classification_table)
 sensitive_data = classification_repo.sensitive_files()
-renderer = PlotlyGraph(sensitive_data, "Sensitive Data Distribution", "")
-sensitive_graph_file_name = renderer.horizontal_gv_bar()
+renderer = HorizGraphDrawer(sensitive_data['graph_data'], "Sensitive Data Distribution", "")
+sensitive_data.update(renderer.horizontal_gv_bar())
 
 
 main_html = HTMLRenderer(sensitive_data)
 main_html.main_renderer()
+print(sensitive_data)

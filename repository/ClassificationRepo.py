@@ -10,4 +10,4 @@ class ClassificationRepo:
                             group by "subCategoryName" 
                             order by count(*) desc
                             limit 10;""")
-        return dict(self.cur.fetchall())
+        return {'graph_data': dict(self.cur.fetchall())}

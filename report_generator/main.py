@@ -15,7 +15,8 @@ import ijson
 
 from repository.ClassificationRepo import ClassificationRepo
 from rendering.HorizGraphDrawer import HorizGraphDrawer
-from rendering.HtmlRenderer import HTMLRenderer
+from rendering.HtmlBodyRenderer import HtmlBodyRenderer
+from rendering.PdfRenderer import  PdfRenderer
 
 import psycopg2
 import json
@@ -48,6 +49,9 @@ renderer = HorizGraphDrawer(sensitive_data['graph_data'], "Sensitive Data Distri
 sensitive_data.update(renderer.horizontal_gv_bar())
 
 
-main_html = HTMLRenderer(sensitive_data)
-main_html.main_renderer()
-print(sensitive_data)
+main_html = HtmlBodyRenderer(sensitive_data)
+main_html_path = main_html.main_renderer()
+full_html_list = []
+full_html_list.append(main_html_path)
+hbr = PdfRenderer(full_html_list)
+hbr.pdf_writer()

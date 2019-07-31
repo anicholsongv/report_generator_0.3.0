@@ -16,12 +16,12 @@ class HorizGraphDrawer:
         self.extra_title = extra_title
         self.gv_colours = ['#1F83C0', '#BCA478', '#2CBA94', '#C94F5F', '#7D4EA0', '#CBA333', '#202733']
 
-
     def horizontal_gv_bar(self):
         # Horiz bar graph with largest on top with gv colours
         graph_title = str(self.graph_title)
         extra_title = str(self.extra_title)
-        data_dict = DataSorter.data_dict_sorter(self.data_dict)
+        dd = DataSorter(self.data_dict)
+        data_dict = dd.data_dict_sorter()
         gv_colours = self.gv_colours
         x_data = list(data_dict.values())
         y_data = list(data_dict.keys())

@@ -16,7 +16,7 @@ import ijson
 from repository.ClassificationRepo import ClassificationRepo
 from rendering.HorizGraphDrawer import HorizGraphDrawer
 from rendering.HtmlBodyRenderer import HtmlBodyRenderer
-from rendering.PdfRenderer import  PdfRenderer
+from rendering.PdfRenderer import PdfRenderer
 
 import psycopg2
 import json
@@ -43,9 +43,12 @@ trustee_json_address = config_dict["trustee_json_address"]
 conn = psycopg2.connect(f"host={host} dbname={dbname} user={user} password={password} port={port}")
 cur = conn.cursor()
 
-classification_repo = ClassificationRepo(cur, classification_table)
-sensitive_data = classification_repo.sensitive_files()
-renderer = HorizGraphDrawer(sensitive_data['graph_data'], "Sensitive Data Distribution", "")
+cr = ClassificationRepo(cur, classification_table)
+
+sensitive_data = cr.sens_subcat_dict()
+
+renderer = HorizGraphDrawer(sensitive_data['data'], sensitive_data['description'], "")
+
 sensitive_data.update(renderer.horizontal_gv_bar())
 
 

@@ -13,7 +13,7 @@
 <div class="information_box">
 <p>The total counts for the top folders:</p>
     <ul>
-{% for k, v in template_dict['graph_data'].items() %}
+{% for k, v in template_dict['sens_subcat_dict'].items() %}
         {% if loop.index <= 10 %}
         <li>{{ k }}: <b>{{ v }}</b></li>
         {% endif %}

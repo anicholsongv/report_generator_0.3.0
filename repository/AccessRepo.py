@@ -9,3 +9,5 @@ class AccessRepo:
     def __init__(self, cur, table):
         self.cur = cur
         self.table = table
+
+

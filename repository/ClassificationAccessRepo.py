@@ -1,13 +1,11 @@
 """
-    Queries that use data from two or more of the Repo Classes
+Queries that join the Classification and Access psql tables
+
 """
 
-class JoinsRepo:
+
+class ClassificationAccessRepo:
 
     def __init__(self, cur, table):
         self.cur = cur
         self.table = table
-
-
-
-

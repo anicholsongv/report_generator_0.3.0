@@ -17,6 +17,8 @@ from repository.ClassificationRepo import ClassificationRepo
 from rendering.HorizGraphDrawer import HorizGraphDrawer
 from rendering.HtmlBodyRenderer import HtmlBodyRenderer
 from rendering.PdfRenderer import PdfRenderer
+from repository.ClassificationFileRepo import ClassificationFileRepo
+from repository.FileRepo import FileRepo
 
 import psycopg2
 import json
@@ -43,18 +45,21 @@ trustee_json_address = config_dict["trustee_json_address"]
 conn = psycopg2.connect(f"host={host} dbname={dbname} user={user} password={password} port={port}")
 cur = conn.cursor()
 
-cr = ClassificationRepo(cur, classification_table)
-
-sensitive_data = cr.sens_subcat_dict()
-
-renderer = HorizGraphDrawer(sensitive_data['data'], sensitive_data['description'], "")
-
-sensitive_data.update(renderer.horizontal_gv_bar())
-
-
-main_html = HtmlBodyRenderer(sensitive_data)
-main_html_path = main_html.main_renderer()
-full_html_list = []
-full_html_list.append(main_html_path)
-hbr = PdfRenderer(full_html_list)
-hbr.pdf_writer()
+# cr = ClassificationRepo(cur, classification_table)
+#
+# sensitive_data = cr.sens_subcat_dict()
+#
+# renderer = HorizGraphDrawer(sensitive_data['data'], sensitive_data['description'], "")
+#
+# sensitive_data.update(renderer.horizontal_gv_bar())
+#
+#
+# main_html = HtmlBodyRenderer(sensitive_data)
+# main_html_path = main_html.main_renderer()
+# full_html_list = []
+# full_html_list.append(main_html_path)
+# hbr = PdfRenderer(full_html_list)
+# hbr.pdf_writer()
+test = ClassificationFileRepo(cur, file_table, classification_table, scanned_share_name)#
+test2 = FileRepo(cur, file_table)
+print(test.copied_categories())

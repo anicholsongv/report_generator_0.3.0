@@ -9,7 +9,9 @@
   "pg_classification_table" : "classification",
   "pg_access_table" : "access",
   "pg_file_table" : "file",
-  "trustee_json_address" : "http://ares.smarttech.local:9999"
+  "trustee_json_address" : "http://ares.smarttech.local:9999",
+  "trustee_username": "admin",
+  "trustee_password": "admin"
 
 }
 

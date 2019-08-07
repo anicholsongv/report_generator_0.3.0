@@ -2,8 +2,9 @@
 Queries that join the Classification and File psql tables
 
 """
-from collections import OrderedDict
+
 from repository.DataSorter import DataSorter
+
 
 class ClassificationFileRepo:
 
@@ -12,10 +13,6 @@ class ClassificationFileRepo:
         self.file_table = file_table
         self.classification_table = classification_table
         self.scanned_share_name = scanned_share_name
-
-
-
-
 
     # Total classified Bytes
     def total_classified_bytes(self):
@@ -69,17 +66,7 @@ class ClassificationFileRepo:
                             group by fi."path" 
                             order by count(*) desc
                            ;""")
-
-        image_folder_tuples = [(k.rsplit('/', 1)[0].split(f'{self.scanned_share_name}', 1)[-1], v) for (k, v) in
-                               self.cur.fetchall()]
-        image_folder_dict = {}
-        for k, v in image_folder_tuples:
-            if k not in image_folder_dict.keys():
-                image_folder_dict[k] = v
-            else:
-                image_folder_dict[k] += v
-
-        image_folder_dict = OrderedDict(reversed(sorted(image_folder_dict.items(), key=lambda i: i[1])))
+        image_folder_dict = DataSorter(self.cur.fetchall()).folder_counter()
         return {'data': image_folder_dict,
                 'description': 'The paths of folders that contain images with the amount in each'}
 
@@ -112,17 +99,7 @@ class ClassificationFileRepo:
                            group by fi."path" 
                            order by count(*) desc;""")
         # Get folder path, exclude share name
-        business_folder_tuples = [(k.rsplit('/', 1)[0].split(f'{self.scanned_share_name}', 1)[-1], v)
-                                  for (k, v) in self.cur.fetchall()]
-        # Count and sort documents in to folders
-        business_folder_dict = {}
-        for k, v in business_folder_tuples:
-            if k not in business_folder_dict.keys():
-                business_folder_dict[k] = v
-            else:
-                business_folder_dict[k] += v
-        # Create Ordered Dictionary
-        business_folder_dict = OrderedDict(reversed(sorted(business_folder_dict.items(), key=lambda i: i[1])))
+        business_folder_dict = DataSorter(self.cur.fetchall()).folder_counter()
         return {'data': business_folder_dict,
                 'description': 'Folders with the most Business documents'}
 
@@ -135,17 +112,7 @@ class ClassificationFileRepo:
                            group by fi."path" 
                            order by count(*) desc;""")
         # Get folder path, exclude share name
-        finance_folder_tuples = [(k.rsplit('/', 1)[0].split(f'{self.scanned_share_name}', 1)[-1], v)
-                                 for (k, v) in self.cur.fetchall()]
-        # Count and sort documents in to folders
-        finance_folder_dict = {}
-        for k, v in finance_folder_tuples:
-            if k not in finance_folder_dict.keys():
-                finance_folder_dict[k] = v
-            else:
-                finance_folder_dict[k] += v
-        # Create Ordered Dictionary
-        finance_folder_dict = OrderedDict(reversed(sorted(finance_folder_dict.items(), key=lambda i: i[1])))
+        finance_folder_dict = DataSorter(self.cur.fetchall()).folder_counter()
         return {'data': finance_folder_dict,
                 'description': 'Folders with the most Financial documents'}
 
@@ -158,17 +125,7 @@ class ClassificationFileRepo:
                            group by fi."path" 
                            order by count(*) desc;""")
         # Get folder path, exclude share name
-        technical_folder_tuples = [(k.rsplit('/', 1)[0].split(f'{self.scanned_share_name}', 1)[-1], v)
-                                   for (k, v) in self.cur.fetchall()]
-        # Count and sort documents in to folders
-        technical_folder_dict = {}
-        for k, v in technical_folder_tuples:
-            if k not in technical_folder_dict.keys():
-                technical_folder_dict[k] = v
-            else:
-                technical_folder_dict[k] += v
-        # Create Ordered Dictionary
-        technical_folder_dict = OrderedDict(reversed(sorted(technical_folder_dict.items(), key=lambda i: i[1])))
+        technical_folder_dict = DataSorter(self.cur.fetchall()).folder_counter()
         return {'data': technical_folder_dict,
                 'description': 'Folders with the most Technical documents'}
 
@@ -181,17 +138,7 @@ class ClassificationFileRepo:
                            group by fi."path" 
                            order by count(*) desc;""")
         # Get folder path, exclude share name
-        legal_folder_tuples = [(k.rsplit('/', 1)[0].split(f'{self.scanned_share_name}', 1)[-1], v)
-                               for (k, v) in self.cur.fetchall()]
-        # Count and sort documents in to folders
-        legal_folder_dict = {}
-        for k, v in legal_folder_tuples:
-            if k not in legal_folder_dict.keys():
-                legal_folder_dict[k] = v
-            else:
-                legal_folder_dict[k] += v
-        # Create Ordered Dictionary
-        legal_folder_dict = OrderedDict(reversed(sorted(legal_folder_dict.items(), key=lambda i: i[1])))
+        legal_folder_dict = DataSorter(self.cur.fetchall()).folder_counter()
         return {'data': legal_folder_dict,
                 'description': 'Folders with the most Legal documents'}
 
@@ -204,17 +151,7 @@ class ClassificationFileRepo:
                            group by fi."path" 
                            order by count(*) desc;""")
         # Get folder path, exclude share name
-        marketing_folder_tuples = [(k.rsplit('/', 1)[0].split(f'{self.scanned_share_name}', 1)[-1], v)
-                                   for (k, v) in self.cur.fetchall()]
-        # Count and sort documents in to folders
-        marketing_folder_dict = {}
-        for k, v in marketing_folder_tuples:
-            if k not in marketing_folder_dict.keys():
-                marketing_folder_dict[k] = v
-            else:
-                marketing_folder_dict[k] += v
-        # Create Ordered Dictionary
-        marketing_folder_dict = OrderedDict(reversed(sorted(marketing_folder_dict.items(), key=lambda i: i[1])))
+        marketing_folder_dict = DataSorter(self.cur.fetchall()).folder_counter()
         return {'data': marketing_folder_dict,
                 'description': 'Folders with the most Marketing documents'}
 
@@ -227,17 +164,7 @@ class ClassificationFileRepo:
                            group by fi."path" 
                            order by count(*) desc;""")
         # Get folder path, exclude share name
-        hr_folder_tuples = [(k.rsplit('/', 1)[0].split(f'{self.scanned_share_name}', 1)[-1], v)
-                            for (k, v) in self.cur.fetchall()]
-        # Count and sort documents in to folders
-        hr_folder_dict = {}
-        for k, v in hr_folder_tuples:
-            if k not in hr_folder_dict.keys():
-                hr_folder_dict[k] = v
-            else:
-                hr_folder_dict[k] += v
-        # Create Ordered Dictionary
-        hr_folder_dict = OrderedDict(reversed(sorted(hr_folder_dict.items(), key=lambda i: i[1])))
+        hr_folder_dict = DataSorter(self.cur.fetchall()).folder_counter()
         return {'data': hr_folder_dict,
                 'description': 'Folders with the most HR documents'}
 
@@ -250,17 +177,7 @@ class ClassificationFileRepo:
                            group by fi."path" 
                            order by count(*) desc;""")
         # Get folder path, exclude share name
-        pii_folder_tuples = [(k.rsplit('/', 1)[0].split(f'{self.scanned_share_name}', 1)[-1], v)
-                             for (k, v) in self.cur.fetchall()]
-        # Count and sort documents in to folders
-        pii_folder_dict = {}
-        for k, v in pii_folder_tuples:
-            if k not in pii_folder_dict.keys():
-                pii_folder_dict[k] = v
-            else:
-                pii_folder_dict[k] += v
-        # Create Ordered Dictionary
-        pii_folder_dict = OrderedDict(reversed(sorted(pii_folder_dict.items(), key=lambda i: i[1])))
+        pii_folder_dict = DataSorter(self.cur.fetchall()).folder_counter()
         return {'data': pii_folder_dict,
                 'description': 'Folders with the most PII documents'}
 

@@ -47,6 +47,9 @@ cur = conn.cursor()
 # hbr.pdf_writer()
 test = ClassificationFileRepo(cur, CR.file_table, CR.classification_table, CR.scanned_share_name)
 test2 = FileRepo(cur, CR.file_table)
+CRE = ClassificationRepo(cur, CR.classification_table)
 
-TR = TrusteeRepo()
-print(TR.oldest_active_users())
+
+HG = HorizGraphDrawer(CRE.category_dict())
+HG.horizontal_graph()
+

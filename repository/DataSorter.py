@@ -15,9 +15,12 @@ class DataSorter:
 
     def data_dict_sorter(self):
         # Takes dictionary. Turns into list of tuples to have large numbers on top
+        # Check for empty keys
+
         sorted_data_dict = sorted(self.data.items(), key=lambda kv: kv[1], reverse=True)
         # Converts back to Dictionary (Ordered)
         sorted_data_dict = OrderedDict(sorted_data_dict)
+        sorted_data_dict = {k: v for k, v in sorted_data_dict.items() if v is not None}
         return sorted_data_dict
 
     def folder_counter(self):

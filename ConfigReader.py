@@ -3,17 +3,14 @@ Reads the config json and returns the entries through its methods
 These entries are used throughout the classes of the report generator
 """
 
-
-import psycopg2
 import json
-
-with open('../config.json', 'r') as config_data:
-    config_dict = json.load(config_data)
 
 
 class ConfigReader:
     # Initialise with config data
     def __init__(self):
+        with open('../config.json', 'r') as config_data:
+            config_dict = json.load(config_data)
         self.config_dict = config_dict
         self.host = config_dict["pg_host"]
         self.dbname = config_dict["pg_db"]

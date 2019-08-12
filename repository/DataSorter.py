@@ -5,12 +5,12 @@ Methods for sorting queried data
 from collections import OrderedDict
 import json
 from ConfigReader import ConfigReader
-CR = ConfigReader()
 
 
 class DataSorter:
 
     def __init__(self, data):
+        self.CR = ConfigReader()
         self.data = data
 
     def data_dict_sorter(self):
@@ -23,7 +23,7 @@ class DataSorter:
     def folder_counter(self):
         # Takes a list of Tuples
         # Get folder path, exclude share name
-        tuple_data = [(k.rsplit('/', 1)[0].split(f'{CR.scanned_share_name}', 1)[-1], v)
+        tuple_data = [(k.rsplit('/', 1)[0].split(f'{self.CR.scanned_share_name}', 1)[-1], v)
                       for (k, v) in self.data]
         # Count and sort documents in to folders
         counted_dict = {}

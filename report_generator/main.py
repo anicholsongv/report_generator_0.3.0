@@ -19,6 +19,7 @@ from rendering.HtmlBodyRenderer import HtmlBodyRenderer
 from rendering.PdfRenderer import PdfRenderer
 from repository.ClassificationFileRepo import ClassificationFileRepo
 from repository.FileRepo import FileRepo
+from repository.TrusteeRepo import TrusteeRepo
 from ConfigReader import ConfigReader
 
 import psycopg2
@@ -47,6 +48,5 @@ cur = conn.cursor()
 test = ClassificationFileRepo(cur, CR.file_table, CR.classification_table, CR.scanned_share_name)
 test2 = FileRepo(cur, CR.file_table)
 
-print(CR.host, CR.dbname)
-print(test.legal_category_folders())
-print(test2.oldest_folders())
+TR = TrusteeRepo()
+print(TR.oldest_active_users())

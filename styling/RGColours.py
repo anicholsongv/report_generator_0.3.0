@@ -12,9 +12,9 @@ class RGColours:
         self.gv_navy = 'rgba(32, 39, 51, 1)'
         self.gv_purple = 'rgba(125, 78, 160, 1)'
         self.gv_gold = 'rgba(188, 164, 120, 1)'
-        self.gv_jade = 'rgba(138, 232, 79, 1)'
-        self.gv_orange = 'rgba(229, 158, 52, 1)'
-        self.gv_turquoise = 'rgba(122, 193, 255, 1)'
+        self.gv_jade = 'rgba(180, 240, 142, 1)'
+        self.gv_orange = 'rgba(237, 190, 120, 1)'
+        self.gv_turquoise = 'rgba(179, 219, 255, 1)'
 
     # List of ten colours for use when the colours are used in order
     def gv_colour_list(self):

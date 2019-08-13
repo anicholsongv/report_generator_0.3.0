@@ -4,17 +4,16 @@
 
 import plotly.graph_objs as go
 import plotly.io as pio
-from repository.DataSorter import DataSorter
+from sorters.DataSorter import DataSorter
 from styling.RGColours import RGColours
-from repository.ClassificationRepo import ClassificationRepo
 
 
 class HorizGraphDrawer:
     output_dir = "../data/dist/"
 
     def __init__(self, info_dict):
-        RGC = RGColours()
-        self.gv_colours = RGC.gv_colour_list
+        self.RGC = RGColours()
+        self.gv_colours = self.RGC.gv_colour_list
         self.data_dict = info_dict['data']
         self.description = info_dict['description']
 
@@ -22,10 +21,8 @@ class HorizGraphDrawer:
     def horizontal_graph(self):
         # Horiz bar graph with largest on top with gv colours
         graph_title = self.description
-        dd = DataSorter(self.data_dict)
-        sorted_dict = dd.data_dict_sorter()
-        print(self.data_dict)
-        print(sorted_dict)
+        DS = DataSorter(self.data_dict)
+        sorted_dict = DS.data_dict_sorter()
         gv_colours = self.gv_colours()
         x_data = list(sorted_dict.values())
         y_data = list(sorted_dict.keys())
@@ -41,9 +38,9 @@ class HorizGraphDrawer:
         )]
 
         # Graph visual structure
-        graph_layout = go.Layout(title=graph_title,autosize=True, width=800,height=500,
-                                       margin=go.layout.Margin(l=80, r=80, b=100, t=100, pad=4),
-                                    font=dict(family="Lato", size=12),
+        graph_layout = go.Layout(title=graph_title, autosize=True, width=800, height=500,
+                                 margin=go.layout.Margin(l=80, r=80, b=100, t=100, pad=4),
+                                 font=dict(family="Lato", size=12),
                                  yaxis=dict(autorange="reversed", automargin=True),
                                  xaxis=dict(tickformat=',d', automargin=True))
 
@@ -56,5 +53,5 @@ class HorizGraphDrawer:
 
         print(file_name_string, "successfully created")
 
-        return {'graph_file_name': f'{file_name_string}.svg'}
+        return f'{self.output_dir}{file_name_string}.svg'
 

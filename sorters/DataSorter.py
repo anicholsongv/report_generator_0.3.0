@@ -3,7 +3,6 @@ Methods for sorting queried data
 """
 
 from collections import OrderedDict
-import json
 from ConfigReader import ConfigReader
 
 
@@ -14,13 +13,13 @@ class DataSorter:
         self.data = data
 
     def data_dict_sorter(self):
-        # Takes dictionary. Turns into list of tuples to have large numbers on top
-        # Check for empty keys
-
-        sorted_data_dict = sorted(self.data.items(), key=lambda kv: kv[1], reverse=True)
+        # Takes dictionary. Turns into list of tuples (orderedDict) to have large numbers on first
+        # Check for underscores and remove empty keys
+        shaved_data_dict = {k.replace("_", " "): v for k, v in self.data.items() if k is not ''}
+        sorted_data_dict = sorted(shaved_data_dict.items(), key=lambda kv: kv[1], reverse=True)
         # Converts back to Dictionary (Ordered)
         sorted_data_dict = OrderedDict(sorted_data_dict)
-        sorted_data_dict = {k: v for k, v in sorted_data_dict.items() if v is not None}
+
         return sorted_data_dict
 
     def folder_counter(self):

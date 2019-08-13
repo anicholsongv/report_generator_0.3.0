@@ -21,6 +21,8 @@ from repository.ClassificationFileRepo import ClassificationFileRepo
 from repository.FileRepo import FileRepo
 from repository.TrusteeRepo import TrusteeRepo
 from ConfigReader import ConfigReader
+from pages.CategoryDistributionPage import CategoryDistributionPage
+from rendering.PieChartDrawer import PieChartDrawer
 
 import psycopg2
 
@@ -49,7 +51,7 @@ test = ClassificationFileRepo(cur, CR.file_table, CR.classification_table, CR.sc
 test2 = FileRepo(cur, CR.file_table)
 CRE = ClassificationRepo(cur, CR.classification_table)
 
-
-HG = HorizGraphDrawer(CRE.category_dict())
-HG.horizontal_graph()
-
+CDP = CategoryDistributionPage(CRE.category_dict())
+PCD = PieChartDrawer(CRE.category_dict())
+CDP.html_string_writer()
+PCD.pie_chart()

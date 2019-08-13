@@ -3,7 +3,7 @@ Queries that join the Classification and File psql tables
 
 """
 
-from repository.DataSorter import DataSorter
+from sorters.DataSorter import DataSorter
 
 
 class ClassificationFileRepo:
